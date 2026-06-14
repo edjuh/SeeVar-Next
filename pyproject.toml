@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "astropy>=7.0",
+  "httpx>=0.28",
   "photutils>=2.3",
   "numpy>=2.0",
   "pillow>=11.0",
@@ -17,6 +18,10 @@ dependencies = [
 ]
 
 [project.scripts]
+seevar-next-fetch-aavso = "seevar_next.preflight.aavso:main"
+seevar-next-fetch-vsx = "seevar_next.preflight.vsx:main"
+seevar-next-preflight = "seevar_next.preflight.planner:main"
+seevar-next-seestarpy-plan = "seevar_next.preflight.seestarpy_plan:main"
 seevar-next-postflight = "seevar_next.postflight.pipeline:main"
 
 [project.optional-dependencies]

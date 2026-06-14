@@ -42,6 +42,27 @@ class TargetPlan(BaseModel):
     exposure_sec: float = 10.0
     min_frames: int = 3
     scope: str | None = None
+    target_type: str | None = None
+    max_mag: float | None = None
+    min_mag: float | None = None
+    cadence_days: float | None = None
+    duration_sec: int = 600
+    best_start_utc: datetime | None = None
+    best_end_utc: datetime | None = None
+    max_alt_deg: float | None = None
+    source: str | None = None
+    notes: dict[str, Any] = Field(default_factory=dict)
+
+
+class NightlyPlan(BaseModel):
+    """A strict preflight target handoff."""
+
+    run_id: str
+    created_utc: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    site_latitude_deg: float
+    site_longitude_deg: float
+    targets: list[TargetPlan] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
 
 
 class PostflightProduct(BaseModel):

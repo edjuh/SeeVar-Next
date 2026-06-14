@@ -71,20 +71,24 @@ Proof:
 
 Goal: build a real nightly target list from SeeVar catalogs and AAVSO cadence needs.
 
+Status: started
+
 Deliverables:
 
-- load variable-star catalog JSON
+- load variable-star catalog JSON - started
 - load ledger/history
-- compute dark window with `astropy`
-- apply horizon, altitude, moon, weather, cadence
+- compute dark window with `astropy` - started
+- apply altitude and dark gates - started
+- apply horizon, moon, weather, cadence
 - assign scopes
-- export seestarpy/seestar_alp-compatible plan
+- export seestarpy-compatible plan - started
+- optional seestar_alp-compatible plan
 
 Proof:
 
-- three-object dry run shows all planned steps
+- three-object dry run shows all planned steps - pending
 - stale catalog/ledger/weather gets explicit warning
-- generated plan is accepted by adapter validation
+- generated plan is accepted by adapter validation - pending
 
 ## Milestone 3: Thin Flight Adapter
 
