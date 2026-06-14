@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seevar-next"
+version = "0.1.0"
+description = "Proof-driven AAVSO workflow for Seestar telescopes"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "astropy>=7.0",
+  "photutils>=2.3",
+  "numpy>=2.0",
+  "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+seestar = [
+  "seestarpy",
+]
+dev = [
+  "pytest>=8.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
