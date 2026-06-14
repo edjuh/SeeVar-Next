@@ -24,6 +24,27 @@ pip install -e ".[dev]"
 pytest
 ```
 
+## First Postflight Command
+
+```bash
+seevar-next-postflight /path/to/object_frames /path/to/catalog.json --output-dir data/postflight
+```
+
+The catalog is intentionally small at this stage:
+
+```json
+{
+  "target": "ST Boo",
+  "ra_deg": 210.0,
+  "dec_deg": 40.0,
+  "filter_name": "TG",
+  "observer_code": "TST",
+  "comparison_stars": [
+    {"id": "C1", "ra_deg": 210.01, "dec_deg": 40.0, "mag": 12.1}
+  ]
+}
+```
+
 ## Roadmap
 
 Start with [ROADMAP.md](ROADMAP.md). It is the control document for this repo.

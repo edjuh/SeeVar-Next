@@ -46,23 +46,26 @@ Proof:
 
 Goal: turn a folder of FITS frames into one accepted science product or one clear failure reason.
 
+Status: in progress
+
 Deliverables:
 
-- FITS ingestion via `astropy.io.fits`
-- frame QC: saturation, trails, blur, missing headers
-- stack candidate builder
-- solve stack first
-- WCS proof object
-- aperture photometry via `photutils`
-- comparison-star matching against AAVSO/Gaia inputs
-- AAVSO Extended report staging
+- FITS ingestion via `astropy.io.fits` - started
+- frame QC: saturation and low-contrast rejection - started
+- trail/blur detection - pending
+- stack candidate builder - started
+- solve stack first - pending external solver; current gate requires valid stack WCS
+- WCS proof object - started
+- aperture photometry via `photutils` - started
+- comparison-star matching against supplied catalog JSON - started
+- AAVSO Extended report staging - started
 
 Proof:
 
-- synthetic FITS test produces one stack/report
-- bad frames are rejected before stacking
-- missing WCS blocks photometry
-- missing comparison stars blocks report
+- synthetic FITS test produces one stack/report - passing
+- bad frames are rejected before stacking - passing
+- missing WCS blocks photometry - passing
+- missing comparison stars blocks report - passing
 
 ## Milestone 2: Preflight Planner
 

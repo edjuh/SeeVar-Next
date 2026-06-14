@@ -12,8 +12,12 @@ dependencies = [
   "astropy>=7.0",
   "photutils>=2.3",
   "numpy>=2.0",
+  "pillow>=11.0",
   "pydantic>=2.0",
 ]
+
+[project.scripts]
+seevar-next-postflight = "seevar_next.postflight.pipeline:main"
 
 [project.optional-dependencies]
 seestar = [

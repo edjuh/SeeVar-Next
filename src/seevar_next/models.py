@@ -53,3 +53,28 @@ class PostflightProduct(BaseModel):
     report_path: Path
     wcs_ok: bool
     photometry_ok: bool
+    accepted_frames: int
+    rejected_frames: int
+    instrumental_mag: float
+    calibrated_mag: float | None = None
+    mag_error: float | None = None
+
+
+class ComparisonStar(BaseModel):
+    """One comparison star used for postflight calibration."""
+
+    id: str
+    ra_deg: float
+    dec_deg: float
+    mag: float
+
+
+class PhotometryCatalog(BaseModel):
+    """Minimal target and comparison-star catalog for one object."""
+
+    target: str
+    ra_deg: float
+    dec_deg: float
+    filter_name: str = "TG"
+    observer_code: str = "UNKNOWN"
+    comparison_stars: list[ComparisonStar] = Field(default_factory=list)
