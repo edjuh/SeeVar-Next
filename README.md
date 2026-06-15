@@ -56,4 +56,4 @@ seevar-next-preflight --catalog campaign_targets --lat 52.39 --lon 4.61 --output
 seevar-next-seestarpy-plan --input data/tonights_plan.json --output data/seestarpy_plan.json
 ```
 
-See [docs/PREFLIGHT.md](docs/PREFLIGHT.md) and [docs/SALVAGE.md](docs/SALVAGE.md).
+See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), and [docs/SALVAGE.md](docs/SALVAGE.md).

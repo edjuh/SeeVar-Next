@@ -86,7 +86,8 @@ Deliverables:
 
 Proof:
 
-- three-object dry run shows all planned steps - pending
+- three-object dry run shows all planned steps - started
+- compact monitor status JSON - started
 - stale catalog/ledger/weather gets explicit warning
 - generated plan is accepted by adapter validation - pending
 

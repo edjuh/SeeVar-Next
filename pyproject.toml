@@ -22,6 +22,8 @@ seevar-next-fetch-aavso = "seevar_next.preflight.aavso:main"
 seevar-next-fetch-vsx = "seevar_next.preflight.vsx:main"
 seevar-next-preflight = "seevar_next.preflight.planner:main"
 seevar-next-seestarpy-plan = "seevar_next.preflight.seestarpy_plan:main"
+seevar-next-dryrun = "seevar_next.flight.dryrun:main"
+seevar-next-status = "seevar_next.monitor.status:main"
 seevar-next-postflight = "seevar_next.postflight.pipeline:main"
 
 [project.optional-dependencies]

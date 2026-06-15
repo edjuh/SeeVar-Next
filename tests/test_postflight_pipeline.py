@@ -7,7 +7,7 @@ from astropy.io import fits
 from astropy.wcs import WCS
 
 from seevar_next.models import StepStatus
-from seevar_next.postflight.pipeline import postflight_target
+from seevar_next.postflight.pipeline import postflight_target, qc_frame
 from seevar_next.proof.ledger import ProofLedger
 
 
@@ -35,6 +35,13 @@ def write_frame(path: Path, header: fits.Header, saturated: bool = False) -> Non
     add_star(data, 60, 50, 7000)
     if saturated:
         data[10:20, 10:20] = 65000
+    fits.PrimaryHDU(data=data.astype(np.float32), header=header).writeto(path)
+
+
+def write_trailed_frame(path: Path, header: fits.Header) -> None:
+    rng = np.random.default_rng(42)
+    data = rng.normal(1000.0, 8.0, size=(100, 100))
+    data[20:80, 50:52] += 12000
     fits.PrimaryHDU(data=data.astype(np.float32), header=header).writeto(path)
 
 
@@ -125,3 +132,14 @@ def test_postflight_blocks_missing_comparison_stars(tmp_path):
 
     rows = ProofLedger(output_dir / "proof.jsonl").read_all()
     assert any(row.step == "photometry" and row.status == StepStatus.FAIL for row in rows)
+
+
+def test_qc_rejects_trailed_frame(tmp_path):
+    path = tmp_path / "trail.fits"
+    write_trailed_frame(path, make_wcs_header())
+
+    ok, reason, meta = qc_frame(path)
+
+    assert ok is False
+    assert reason == "trailed frame"
+    assert meta["trail_elongation"] > 5.0

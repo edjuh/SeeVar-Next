@@ -29,6 +29,8 @@ from seevar_next.proof.ledger import ProofLedger
 SATURATION_ADU = 58000.0
 MAX_SATURATED_FRACTION = 0.001
 MIN_STD_ADU = 2.0
+MAX_TRAIL_ELONGATION = 5.0
+MIN_TRAIL_PIXELS = 8
 APERTURE_RADIUS_PX = 4.0
 ANNULUS_INNER_PX = 8.0
 ANNULUS_OUTER_PX = 12.0
@@ -62,6 +64,47 @@ def read_fits_data(path: Path) -> tuple[np.ndarray, fits.Header]:
     return data, header
 
 
+def _component_elongation(coords: np.ndarray) -> float:
+    """Return major/minor axis ratio for one bright component."""
+    if len(coords) < MIN_TRAIL_PIXELS:
+        return 1.0
+    centered = coords.astype(float) - coords.mean(axis=0)
+    cov = np.cov(centered, rowvar=False)
+    eig = np.linalg.eigvalsh(cov)
+    minor = max(float(eig[0]), 1e-6)
+    major = max(float(eig[-1]), minor)
+    return math.sqrt(major / minor)
+
+
+def trail_elongation(data: np.ndarray) -> float:
+    """Estimate worst bright-source elongation."""
+    finite = data[np.isfinite(data)]
+    if finite.size == 0:
+        return 1.0
+    _, median, std = sigma_clipped_stats(finite, sigma=3.0)
+    threshold = float(median + 6.0 * std)
+    mask = data >= threshold
+    seen = np.zeros(mask.shape, dtype=bool)
+    worst = 1.0
+    height, width = mask.shape
+    for y, x in np.argwhere(mask):
+        if seen[y, x]:
+            continue
+        stack = [(int(y), int(x))]
+        coords = []
+        seen[y, x] = True
+        while stack:
+            cy, cx = stack.pop()
+            coords.append((cy, cx))
+            for ny in range(max(0, cy - 1), min(height, cy + 2)):
+                for nx in range(max(0, cx - 1), min(width, cx + 2)):
+                    if mask[ny, nx] and not seen[ny, nx]:
+                        seen[ny, nx] = True
+                        stack.append((ny, nx))
+        worst = max(worst, _component_elongation(np.asarray(coords)))
+    return float(worst)
+
+
 def qc_frame(path: Path) -> tuple[bool, str, dict]:
     """Return whether a frame is usable for stacking."""
     try:
@@ -82,11 +125,14 @@ def qc_frame(path: Path) -> tuple[bool, str, dict]:
         "saturated_fraction": saturated_fraction,
         "date_obs": header.get("DATE-OBS"),
     }
+    meta["trail_elongation"] = trail_elongation(data)
 
     if saturated_fraction > MAX_SATURATED_FRACTION:
         return False, "saturated frame", meta
     if float(std) < MIN_STD_ADU:
         return False, "low contrast frame", meta
+    if meta["trail_elongation"] > MAX_TRAIL_ELONGATION:
+        return False, "trailed frame", meta
     return True, "accepted", meta
 
 

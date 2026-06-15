@@ -145,6 +145,23 @@ def main() -> int:
     write_plan(plan, args.output)
     status = StepStatus.PASS if plan.targets else StepStatus.FAIL
     ledger.append(ProofStep(run_id=args.run_id, target="*", phase="preflight", step="plan", status=status, evidence_path=str(args.output), meta={"planned": len(plan.targets), "warnings": plan.warnings}))
+    for order, target in enumerate(plan.targets, start=1):
+        ledger.append(
+            ProofStep(
+                run_id=args.run_id,
+                target=target.name,
+                phase="preflight",
+                step="observable",
+                status=StepStatus.PASS,
+                evidence_path=str(args.output),
+                meta={
+                    "order": order,
+                    "best_start_utc": target.best_start_utc.isoformat() if target.best_start_utc else None,
+                    "best_end_utc": target.best_end_utc.isoformat() if target.best_end_utc else None,
+                    "max_alt_deg": target.max_alt_deg,
+                },
+            )
+        )
     print(json.dumps({"planned": len(plan.targets), "output": str(args.output), "warnings": plan.warnings}, indent=2))
     return 0 if plan.targets else 2
 
