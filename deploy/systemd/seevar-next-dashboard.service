@@ -1,0 +1,10 @@
+[Unit]
+Description=SeeVar Next dashboard
+
+[Service]
+WorkingDirectory=%h/SeeVar-Next
+ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next-dashboard --host 0.0.0.0 --port 8765
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

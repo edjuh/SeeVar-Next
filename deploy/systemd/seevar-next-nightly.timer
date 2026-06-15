@@ -1,0 +1,9 @@
+[Unit]
+Description=Run SeeVar Next automated nightly run
+
+[Timer]
+OnCalendar=*-*-* 22:30:00
+Persistent=false
+
+[Install]
+WantedBy=timers.target

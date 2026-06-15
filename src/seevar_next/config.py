@@ -16,6 +16,7 @@ class ScopeConfig(BaseModel):
     model: str = "S30-Pro"
     mount: str = "eq"
     enabled: bool = True
+    status_ports: list[int] = Field(default_factory=lambda: [22, 4700, 11111, 80])
 
 
 class StorageConfig(BaseModel):
@@ -34,6 +35,21 @@ class AavsoConfig(BaseModel):
     target_tool_api_key_env: str = "AAVSO_TARGET_TOOL_API_KEY"
 
 
+class WeatherConfig(BaseModel):
+    """Weather gate settings."""
+
+    enabled: bool = True
+    provider: str = "open-meteo"
+    forecast_hours: int = 8
+    timeout_sec: float = 8.0
+    max_cloud_cover_pct: float = 70.0
+    max_precip_probability_pct: float = 20.0
+    max_precip_mm: float = 0.1
+    max_wind_kmh: float = 30.0
+    max_gust_kmh: float = 45.0
+    min_visibility_m: float = 5000.0
+
+
 class SeeVarConfig(BaseModel):
     """Top-level operator config."""
 
@@ -48,6 +64,7 @@ class SeeVarConfig(BaseModel):
     scopes: list[ScopeConfig] = Field(default_factory=list)
     storage: StorageConfig = Field(default_factory=StorageConfig)
     aavso: AavsoConfig = Field(default_factory=AavsoConfig)
+    weather: WeatherConfig = Field(default_factory=WeatherConfig)
     seestarpy_plan_path: str = "data/seestarpy_plan.json"
 
 

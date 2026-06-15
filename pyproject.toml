@@ -26,7 +26,9 @@ seevar-next-seestarpy-plan = "seevar_next.preflight.seestarpy_plan:main"
 seevar-next-dryrun = "seevar_next.flight.dryrun:main"
 seevar-next-flight = "seevar_next.flight.runner:main"
 seevar-next-status = "seevar_next.monitor.status:main"
+seevar-next-readiness = "seevar_next.readiness:main"
 seevar-next-postflight = "seevar_next.postflight.pipeline:main"
+seevar-next-dashboard = "seevar_next.dashboard:main"
 
 [project.optional-dependencies]
 seestar = [

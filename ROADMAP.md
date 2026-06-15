@@ -80,6 +80,7 @@ Deliverables:
 - compute dark window with `astropy` - started
 - apply altitude and dark gates - started
 - apply horizon, moon, weather, cadence
+- weather gate through Open-Meteo - started
 - assign scopes
 - export seestarpy-compatible plan - started
 - optional seestar_alp-compatible plan
@@ -88,6 +89,7 @@ Proof:
 
 - three-object dry run shows all planned steps - started
 - compact monitor status JSON - started
+- human-readable readiness report - started
 - stale catalog/ledger/weather gets explicit warning
 - generated plan is accepted by adapter validation - pending
 
@@ -101,6 +103,7 @@ Deliverables:
 - `seestarpy` plan submit/status adapter - started
 - optional `seestar_alp` plan export
 - target state monitor
+- telescope reachability gate - started
 - stack/download monitor
 - timeout and fail-reason handling
 

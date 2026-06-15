@@ -22,12 +22,15 @@ Pick:
 - `1` build tonight's plan
 - `2` dry-run 3 targets
 - `3` show status
-- `4` refresh AAVSO catalog
-- `5` submit seestarpy plan
-- `6` show seestarpy plan status
+- `4` check readiness
+- `5` refresh AAVSO catalog
+- `6` submit seestarpy plan
+- `7` show seestarpy plan status
+- `8` start dashboard
 
 Configuration lives in `config/seevar-next.json`.
 Set `sun_alt_limit_deg` stricter or looser for your site and season.
+Weather gates and telescope probe ports live in the same config.
 
 ## Daily Automatic Run
 
@@ -66,11 +69,20 @@ seevar-next-seestarpy-plan \
 ## Submit Or Monitor Flight
 
 ```bash
+seevar-next readiness
 seevar-next-flight validate --plan data/seestarpy_plan.json
 seevar-next-flight submit --plan data/seestarpy_plan.json
 seevar-next-flight status --timeout-sec 12
 seevar-next-flight stop
 ```
+
+`seevar-next readiness` writes:
+
+- `data/readiness.txt`: human-readable GO / NO-GO
+- `data/readiness.json`: machine-readable state
+- `data/flight_runs/readiness.jsonl`: proof rows
+
+The operator `flight-submit` command runs readiness first and blocks submit on weather or telescope connection failure.
 
 ## Dry Run
 
@@ -90,6 +102,16 @@ seevar-next-status \
   --plan data/tonights_plan.json \
   --output data/status.json
 ```
+
+## Dashboard
+
+```bash
+seevar-next dashboard
+```
+
+Open `http://192.168.178.57:8765/`.
+
+The dashboard is intentionally small: readiness, tonight's targets, proof status, and links to raw files.
 
 ## Postflight
 

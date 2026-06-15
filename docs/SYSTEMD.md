@@ -1,10 +1,41 @@
 # systemd
 
-Use this when SeeVar Next should prepare the plan every evening.
+Use this when SeeVar Next should prepare or run unattended.
 
 The supplied unit assumes the repo lives at `~/SeeVar-Next`.
 
-## Install
+## Automated Nightly Run
+
+This builds the plan, checks weather and telescope reachability, then submits the seestarpy plan only if readiness passes.
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp deploy/systemd/seevar-next-nightly.service ~/.config/systemd/user/
+cp deploy/systemd/seevar-next-nightly.timer ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now seevar-next-nightly.timer
+```
+
+Check:
+
+```bash
+systemctl --user list-timers seevar-next-nightly.timer
+journalctl --user -u seevar-next-nightly.service -n 100
+cat ~/SeeVar-Next/data/readiness.txt
+```
+
+## Dashboard
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp deploy/systemd/seevar-next-dashboard.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now seevar-next-dashboard.service
+```
+
+Open `http://192.168.178.57:8765/`.
+
+## Preflight Only
 
 ```bash
 mkdir -p ~/.config/systemd/user
@@ -25,4 +56,5 @@ journalctl --user -u seevar-next-preflight.service -n 100
 
 ```bash
 systemctl --user start seevar-next-preflight.service
+systemctl --user start seevar-next-nightly.service
 ```

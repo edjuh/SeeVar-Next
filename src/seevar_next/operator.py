@@ -13,7 +13,7 @@ DEFAULT_CONFIG = Path("config/seevar-next.json")
 
 def run(cmd: list[str]) -> int:
     """Run one command and stream output."""
-    print("$ " + " ".join(cmd))
+    print("$ " + " ".join(cmd), flush=True)
     return subprocess.call(cmd)
 
 
@@ -87,6 +87,11 @@ def status() -> int:
     )
 
 
+def readiness(config_path: Path) -> int:
+    """Check weather and scope readiness."""
+    return run(["seevar-next-readiness", "--config", str(config_path)])
+
+
 def refresh_aavso() -> int:
     """Refresh AAVSO campaign catalog."""
     return run(["seevar-next-fetch-aavso", "--output", "catalogs/campaign_targets.json"])
@@ -97,9 +102,22 @@ def flight_submit(config: SeeVarConfig) -> int:
     return run(["seevar-next-flight", "submit", "--plan", config.seestarpy_plan_path])
 
 
+def guarded_flight_submit(config: SeeVarConfig, config_path: Path) -> int:
+    """Gate flight submit on weather and telescope readiness."""
+    rc = readiness(config_path)
+    if rc:
+        return rc
+    return flight_submit(config)
+
+
 def flight_status() -> int:
     """Show seestarpy running-plan status."""
     return run(["seevar-next-flight", "status"])
+
+
+def dashboard(config_path: Path) -> int:
+    """Serve the local dashboard."""
+    return run(["seevar-next-dashboard", "--config", str(config_path)])
 
 
 def menu(config_path: Path) -> int:
@@ -109,9 +127,11 @@ def menu(config_path: Path) -> int:
         "1": ("Build tonight plan", lambda: preflight(config)),
         "2": ("Dry-run 3 targets", dryrun),
         "3": ("Show status", status),
-        "4": ("Refresh AAVSO catalog", refresh_aavso),
-        "5": ("Submit seestarpy plan", lambda: flight_submit(config)),
-        "6": ("Seestarpy plan status", flight_status),
+        "4": ("Check readiness", lambda: readiness(config_path)),
+        "5": ("Refresh AAVSO catalog", refresh_aavso),
+        "6": ("Submit seestarpy plan", lambda: guarded_flight_submit(config, config_path)),
+        "7": ("Seestarpy plan status", flight_status),
+        "8": ("Start dashboard", lambda: dashboard(config_path)),
         "q": ("Quit", lambda: 0),
     }
     while True:
@@ -131,7 +151,17 @@ def main() -> int:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["menu", "preflight", "dryrun", "status", "refresh-aavso", "flight-submit", "flight-status"],
+        choices=[
+            "menu",
+            "preflight",
+            "dryrun",
+            "status",
+            "readiness",
+            "refresh-aavso",
+            "flight-submit",
+            "flight-status",
+            "dashboard",
+        ],
         default="menu",
     )
     args = parser.parse_args()
@@ -144,12 +174,16 @@ def main() -> int:
         return dryrun()
     if args.command == "status":
         return status()
+    if args.command == "readiness":
+        return readiness(args.config)
     if args.command == "refresh-aavso":
         return refresh_aavso()
     if args.command == "flight-submit":
-        return flight_submit(config)
+        return guarded_flight_submit(config, args.config)
     if args.command == "flight-status":
         return flight_status()
+    if args.command == "dashboard":
+        return dashboard(args.config)
     return 2
 
 
