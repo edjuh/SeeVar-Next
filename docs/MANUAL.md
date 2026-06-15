@@ -23,6 +23,8 @@ Pick:
 - `2` dry-run 3 targets
 - `3` show status
 - `4` refresh AAVSO catalog
+- `5` submit seestarpy plan
+- `6` show seestarpy plan status
 
 Configuration lives in `config/seevar-next.json`.
 Set `sun_alt_limit_deg` stricter or looser for your site and season.
@@ -59,6 +61,15 @@ seevar-next-preflight \
 seevar-next-seestarpy-plan \
   --input data/tonights_plan.json \
   --output data/seestarpy_plan.json
+```
+
+## Submit Or Monitor Flight
+
+```bash
+seevar-next-flight validate --plan data/seestarpy_plan.json
+seevar-next-flight submit --plan data/seestarpy_plan.json
+seevar-next-flight status
+seevar-next-flight stop
 ```
 
 ## Dry Run

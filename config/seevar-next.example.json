@@ -6,5 +6,32 @@
   "hours": 24.0,
   "sun_alt_limit_deg": -12.0,
   "min_alt_deg": 25.0,
-  "timezone": "Europe/Amsterdam"
+  "timezone": "Europe/Amsterdam",
+  "seestarpy_plan_path": "data/seestarpy_plan.json",
+  "scopes": [
+    {
+      "name": "Wilhelmina",
+      "host": "192.168.178.251",
+      "model": "S30-Pro",
+      "mount": "eq",
+      "enabled": true
+    },
+    {
+      "name": "Anna",
+      "host": "192.168.178.252",
+      "model": "S30-Pro",
+      "mount": "eq",
+      "enabled": false
+    }
+  ],
+  "storage": {
+    "work_dir": "data",
+    "raw_dir": "data/raw",
+    "postflight_dir": "data/postflight",
+    "nas_dir": null
+  },
+  "aavso": {
+    "observer_code": "UNKNOWN",
+    "target_tool_api_key_env": "AAVSO_TARGET_TOOL_API_KEY"
+  }
 }

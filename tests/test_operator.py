@@ -1,6 +1,6 @@
 import json
 
-from seevar_next.operator import load_config
+from seevar_next.config import load_config
 
 
 def test_load_operator_config(tmp_path):
@@ -9,5 +9,5 @@ def test_load_operator_config(tmp_path):
 
     cfg = load_config(path)
 
-    assert cfg["latitude_deg"] == 1.0
-    assert cfg["longitude_deg"] == 2.0
+    assert cfg.latitude_deg == 1.0
+    assert cfg.longitude_deg == 2.0

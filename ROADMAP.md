@@ -98,6 +98,7 @@ Goal: use Seestar tooling for execution while SeeVar records proof.
 Deliverables:
 
 - `seestarpy` adapter
+- `seestarpy` plan submit/status adapter - started
 - optional `seestar_alp` plan export
 - target state monitor
 - stack/download monitor

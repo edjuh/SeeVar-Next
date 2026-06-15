@@ -20,4 +20,7 @@ seevar-next-preflight --catalog campaign_targets --lat 52.39 --lon 4.61 --output
 seevar-next-seestarpy-plan --input data/tonights_plan.json --output data/seestarpy_plan.json
 seevar-next-dryrun --plan data/tonights_plan.json --proof data/flight_runs/dryrun.jsonl --status data/status.json --limit 3
 seevar-next-status --proof data/flight_runs/dryrun.jsonl --plan data/tonights_plan.json
+seevar-next-flight validate --plan data/seestarpy_plan.json
+seevar-next-flight submit --plan data/seestarpy_plan.json
+seevar-next-flight status
 ```
