@@ -10,9 +10,9 @@ from typing import Any
 def build_flight_snapshot(current: dict[str, Any] | None, error: str | None = None) -> dict[str, Any]:
     """Build a compact flight snapshot."""
     if error:
-        return {"running": False, "state": "error", "error": error, "targets": []}
+        return {"running": False, "state": "error", "error": error, "targets": [], "scopes": []}
     if not current:
-        return {"running": False, "state": "idle", "targets": []}
+        return {"running": False, "state": "idle", "targets": [], "scopes": []}
     plan = current.get("plan") or {}
     targets = []
     for item in plan.get("list", []):
@@ -30,6 +30,7 @@ def build_flight_snapshot(current: dict[str, Any] | None, error: str | None = No
         "state": current.get("state", "running"),
         "plan_name": plan.get("plan_name"),
         "targets": targets,
+        "scopes": [],
     }
 
 
@@ -39,6 +40,7 @@ def build_submitted_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
         "running": True,
         "state": "submitted",
         "plan_name": payload.get("plan_name"),
+        "scopes": [],
         "targets": [
             {
                 "name": item.get("target_name") or "-",
@@ -52,6 +54,13 @@ def build_submitted_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def with_scope_status(snapshot: dict[str, Any], scopes: list[dict[str, Any]]) -> dict[str, Any]:
+    """Attach scope status to a flight snapshot."""
+    clone = dict(snapshot)
+    clone["scopes"] = scopes
+    return clone
+
+
 def render_flight_status(snapshot: dict[str, Any]) -> str:
     """Render flight status for humans."""
     state = str(snapshot.get("state", "unknown")).upper()
@@ -60,6 +69,13 @@ def render_flight_status(snapshot: dict[str, Any]) -> str:
         lines.append(f"Plan: {snapshot['plan_name']}")
     if snapshot.get("error"):
         lines.append(f"Error: {snapshot['error']}")
+    scopes = snapshot.get("scopes") or []
+    if scopes:
+        lines.append("Scopes:")
+        for scope in scopes:
+            state = "online" if scope.get("ok") else "offline"
+            detail = scope.get("summary") or "; ".join(scope.get("errors", [])) or "-"
+            lines.append(f"- {scope.get('name', scope.get('host'))} {scope.get('host')}: {state} - {detail}")
     targets = snapshot.get("targets") or []
     if targets:
         lines.append("Targets:")

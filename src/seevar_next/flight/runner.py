@@ -7,13 +7,31 @@ import json
 import time
 from pathlib import Path
 
+from seevar_next.config import load_config
+from seevar_next.flight.seestar_rpc import probe_status
 from seevar_next.flight.seestarpy_adapter import SeestarpyAdapter
 from seevar_next.flight.status import (
     build_flight_snapshot,
     build_submitted_snapshot,
     render_flight_status,
+    with_scope_status,
     write_flight_status,
 )
+
+
+def _scope_status(config_path: Path, timeout_sec: float) -> list[dict]:
+    """Probe configured scopes without seestarpy discovery."""
+    config = load_config(config_path)
+    rows = []
+    for scope in config.scopes:
+        if not scope.enabled:
+            rows.append({"name": scope.name, "host": scope.host, "ok": True, "summary": "disabled"})
+            continue
+        status = probe_status(scope.host, timeout_sec=min(timeout_sec, 2.0))
+        status["name"] = scope.name
+        status["summary"] = "rpc ok" if status.get("ok") else "rpc unavailable"
+        rows.append(status)
+    return rows
 
 
 def _print_status(snapshot: dict, human: bool) -> None:
@@ -32,6 +50,7 @@ def main() -> int:
     parser.add_argument("--proof", type=Path, default=Path("data/flight_runs/flight.jsonl"))
     parser.add_argument("--json-output", type=Path, default=Path("data/flight_status.json"))
     parser.add_argument("--text-output", type=Path, default=Path("data/flight_status.txt"))
+    parser.add_argument("--config", type=Path, default=Path("config/seevar-next.json"))
     parser.add_argument("--run-id", default="manual")
     parser.add_argument("--timeout-sec", type=float, default=12.0)
     parser.add_argument("--human", action="store_true")
@@ -61,15 +80,26 @@ def main() -> int:
         while True:
             sample += 1
             try:
-                snapshot = build_flight_snapshot(adapter.status())
+                scopes = _scope_status(args.config, args.timeout_sec)
+                enabled_online = any(scope.get("ok") and scope.get("summary") != "disabled" for scope in scopes)
+                current = adapter.status() if enabled_online else None
+                snapshot = with_scope_status(build_flight_snapshot(current), scopes)
                 write_flight_status(snapshot, args.json_output, args.text_output)
                 _print_status(snapshot, args.human)
                 last_rc = 0
             except Exception as exc:
-                snapshot = build_flight_snapshot(None, str(exc))
+                try:
+                    scopes = _scope_status(args.config, args.timeout_sec)
+                except Exception:
+                    scopes = []
+                if scopes and not any(scope.get("ok") and scope.get("summary") != "disabled" for scope in scopes):
+                    snapshot = with_scope_status(build_flight_snapshot(None), scopes)
+                    last_rc = 0
+                else:
+                    snapshot = with_scope_status(build_flight_snapshot(None, str(exc)), scopes)
+                    last_rc = 1
                 write_flight_status(snapshot, args.json_output, args.text_output)
                 _print_status(snapshot, args.human)
-                last_rc = 1
             if args.command == "status" or (args.samples and sample >= args.samples):
                 return last_rc
             time.sleep(args.interval_sec)
