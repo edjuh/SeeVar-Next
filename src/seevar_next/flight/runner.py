@@ -24,16 +24,28 @@ def main() -> int:
         print(json.dumps({"valid": payload["plan_name"], "targets": len(payload["list"])}, indent=2))
         return 0
     if args.command == "submit":
-        payload = adapter.submit_file(args.plan)
-        print(json.dumps({"submitted": payload["plan_name"], "targets": len(payload["list"])}, indent=2))
-        return 0
+        try:
+            payload = adapter.submit_file(args.plan)
+            print(json.dumps({"submitted": payload["plan_name"], "targets": len(payload["list"])}, indent=2))
+            return 0
+        except Exception as exc:
+            print(json.dumps({"submitted": False, "error": str(exc)}, indent=2))
+            return 1
     if args.command == "status":
-        current = adapter.status()
-        print(json.dumps(current or {"running": False}, indent=2))
+        try:
+            current = adapter.status()
+            print(json.dumps(current or {"running": False}, indent=2))
+            return 0
+        except Exception as exc:
+            print(json.dumps({"running": False, "error": str(exc)}, indent=2))
+            return 1
+    try:
+        adapter.stop()
+        print(json.dumps({"stopped": True}, indent=2))
         return 0
-    adapter.stop()
-    print(json.dumps({"stopped": True}, indent=2))
-    return 0
+    except Exception as exc:
+        print(json.dumps({"stopped": False, "error": str(exc)}, indent=2))
+        return 1
 
 
 if __name__ == "__main__":
