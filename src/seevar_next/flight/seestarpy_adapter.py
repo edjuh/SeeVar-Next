@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import importlib
 import json
+import signal
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -40,12 +42,32 @@ def _seestarpy_plan_module():
         return package.plan
 
 
+@contextmanager
+def time_limit(seconds: float):
+    """Raise TimeoutError when seestarpy blocks too long."""
+    if seconds <= 0 or not hasattr(signal, "SIGALRM"):
+        yield
+        return
+
+    def _handler(_signum, _frame):
+        raise TimeoutError(f"seestarpy call exceeded {seconds:.1f}s")
+
+    old_handler = signal.signal(signal.SIGALRM, _handler)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, old_handler)
+
+
 class SeestarpyAdapter:
     """Submit and monitor plans through seestarpy."""
 
-    def __init__(self, proof_path: Path, run_id: str = "manual") -> None:
+    def __init__(self, proof_path: Path, run_id: str = "manual", timeout_sec: float = 12.0) -> None:
         self.ledger = ProofLedger(proof_path)
         self.run_id = run_id
+        self.timeout_sec = timeout_sec
 
     def _proof(self, step: str, status: StepStatus, reason: str | None = None, meta: dict | None = None) -> None:
         """Append one flight proof row."""
@@ -67,8 +89,9 @@ class SeestarpyAdapter:
         validate_plan_payload(payload)
         self._proof("validate_plan", StepStatus.PASS, meta={"targets": len(payload["list"]), "plan": str(path)})
         try:
-            plan = _seestarpy_plan_module()
-            plan.set_view_plan(payload)
+            with time_limit(self.timeout_sec):
+                plan = _seestarpy_plan_module()
+                plan.set_view_plan(payload)
         except Exception as exc:
             self._proof("submit_plan", StepStatus.FAIL, reason=str(exc))
             raise
@@ -85,8 +108,9 @@ class SeestarpyAdapter:
     def status(self) -> dict[str, Any] | None:
         """Read and proof current running plan status."""
         try:
-            plan = _seestarpy_plan_module()
-            current = plan.get_running_plan()
+            with time_limit(self.timeout_sec):
+                plan = _seestarpy_plan_module()
+                current = plan.get_running_plan()
         except Exception as exc:
             self._proof("running_plan", StepStatus.FAIL, reason=str(exc))
             raise
@@ -108,8 +132,9 @@ class SeestarpyAdapter:
     def stop(self) -> None:
         """Stop the running plan."""
         try:
-            plan = _seestarpy_plan_module()
-            plan.stop_view_plan()
+            with time_limit(self.timeout_sec):
+                plan = _seestarpy_plan_module()
+                plan.stop_view_plan()
         except Exception as exc:
             self._proof("stop_plan", StepStatus.FAIL, reason=str(exc))
             raise

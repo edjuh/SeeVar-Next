@@ -68,7 +68,7 @@ seevar-next-seestarpy-plan \
 ```bash
 seevar-next-flight validate --plan data/seestarpy_plan.json
 seevar-next-flight submit --plan data/seestarpy_plan.json
-seevar-next-flight status
+seevar-next-flight status --timeout-sec 12
 seevar-next-flight stop
 ```
 

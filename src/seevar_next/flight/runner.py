@@ -16,8 +16,9 @@ def main() -> int:
     parser.add_argument("--plan", type=Path, default=Path("data/seestarpy_plan.json"))
     parser.add_argument("--proof", type=Path, default=Path("data/flight_runs/flight.jsonl"))
     parser.add_argument("--run-id", default="manual")
+    parser.add_argument("--timeout-sec", type=float, default=12.0)
     args = parser.parse_args()
-    adapter = SeestarpyAdapter(args.proof, args.run_id)
+    adapter = SeestarpyAdapter(args.proof, args.run_id, timeout_sec=args.timeout_sec)
     if args.command == "validate":
         payload = adapter.validate_file(args.plan)
         print(json.dumps({"valid": payload["plan_name"], "targets": len(payload["list"])}, indent=2))

@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from seevar_next.flight.seestarpy_adapter import SeestarpyAdapter, validate_plan_payload
+from seevar_next.flight.seestarpy_adapter import SeestarpyAdapter, time_limit, validate_plan_payload
 from seevar_next.proof.ledger import ProofLedger
 
 
@@ -61,3 +61,10 @@ def test_validate_does_not_require_seestarpy(tmp_path):
 
     assert payload["plan_name"] == "SeeVar"
     assert ProofLedger(proof_path).read_all()[0].step == "validate_plan"
+
+
+def test_time_limit_raises():
+    with pytest.raises(TimeoutError):
+        with time_limit(0.01):
+            while True:
+                pass
