@@ -29,8 +29,10 @@ cat ~/SeeVar-Next/data/readiness.txt
 ```bash
 mkdir -p ~/.config/systemd/user
 cp deploy/systemd/seevar-next-dashboard.service ~/.config/systemd/user/
+cp deploy/systemd/seevar-next-flight-monitor.service ~/.config/systemd/user/
 systemctl --user daemon-reload
 systemctl --user enable --now seevar-next-dashboard.service
+systemctl --user enable --now seevar-next-flight-monitor.service
 ```
 
 Open `http://192.168.178.57:8765/`.

@@ -1,0 +1,12 @@
+[Unit]
+Description=SeeVar Next flight monitor
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/SeeVar-Next
+ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next-flight monitor --human --samples 0 --interval-sec 30
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

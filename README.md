@@ -65,9 +65,10 @@ seevar-next-readiness --config config/seevar-next.json
 
 `seevar-next-readiness` writes `data/readiness.txt` for humans and blocks unattended submit when weather or telescope connection checks fail.
 
-Human dashboard:
+Human flight status and dashboard:
 
 ```bash
+seevar-next-flight status --human
 seevar-next dashboard
 ```
 

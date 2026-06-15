@@ -62,10 +62,28 @@ def _status_rows(status: dict) -> str:
     return "\n".join(rows) or "<tr><td colspan='5'>No proof status yet</td></tr>"
 
 
+def _flight_rows(flight: dict) -> str:
+    """Render flight target rows."""
+    rows = []
+    for idx, target in enumerate(flight.get("targets") or [], start=1):
+        rows.append(
+            "<tr>"
+            f"<td>{idx}</td>"
+            f"<td>{html.escape(str(target.get('name', '-')))}</td>"
+            f"<td>{html.escape(str(target.get('state', '-')))}</td>"
+            f"<td>{html.escape(str(target.get('duration_min') or '-'))}</td>"
+            f"<td>{'yes' if target.get('skip') else 'no'}</td>"
+            "</tr>"
+        )
+    return "\n".join(rows) or "<tr><td colspan='5'>No flight status yet</td></tr>"
+
+
 def render_dashboard(config_path: Path = Path("config/seevar-next.json"), data_dir: Path = Path("data")) -> str:
     """Render the dashboard HTML."""
     config = load_config(config_path)
     readiness = _read_text(data_dir / "readiness.txt")
+    flight_text = _read_text(data_dir / "flight_status.txt")
+    flight = _read_json(data_dir / "flight_status.json")
     plan = _read_json(data_dir / "tonights_plan.json")
     status = _read_json(data_dir / "status.json")
     return f"""<!doctype html>
@@ -92,10 +110,17 @@ a {{ color: #67e8f9; margin-right: 16px; }}
 <main>
 <h1>SeeVar Next</h1>
 <p class="muted">{html.escape(config.timezone)} | {config.latitude_deg:.4f}, {config.longitude_deg:.4f}</p>
-<p><a href="/readiness.txt">readiness.txt</a><a href="/readiness.json">readiness.json</a><a href="/tonights_plan.json">plan.json</a><a href="/status.json">status.json</a></p>
+<p><a href="/readiness.txt">readiness.txt</a><a href="/readiness.json">readiness.json</a><a href="/flight_status.txt">flight_status.txt</a><a href="/flight_status.json">flight_status.json</a><a href="/tonights_plan.json">plan.json</a><a href="/status.json">status.json</a></p>
 <section>
 <h2>Readiness</h2>
 <pre>{html.escape(readiness)}</pre>
+</section>
+<section>
+<h2>Flight</h2>
+<pre>{html.escape(flight_text)}</pre>
+<table><thead><tr><th>#</th><th>Target</th><th>State</th><th>Duration Min</th><th>Skip</th></tr></thead><tbody>
+{_flight_rows(flight)}
+</tbody></table>
 </section>
 <section>
 <h2>Tonight</h2>
@@ -127,6 +152,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
         files = {
             "/readiness.txt": (self.data_dir / "readiness.txt", "text/plain"),
             "/readiness.json": (self.data_dir / "readiness.json", "application/json"),
+            "/flight_status.txt": (self.data_dir / "flight_status.txt", "text/plain"),
+            "/flight_status.json": (self.data_dir / "flight_status.json", "application/json"),
             "/tonights_plan.json": (self.data_dir / "tonights_plan.json", "application/json"),
             "/status.json": (self.data_dir / "status.json", "application/json"),
         }

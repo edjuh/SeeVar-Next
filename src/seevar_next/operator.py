@@ -112,7 +112,12 @@ def guarded_flight_submit(config: SeeVarConfig, config_path: Path) -> int:
 
 def flight_status() -> int:
     """Show seestarpy running-plan status."""
-    return run(["seevar-next-flight", "status"])
+    return run(["seevar-next-flight", "status", "--human"])
+
+
+def flight_monitor() -> int:
+    """Monitor seestarpy flight status."""
+    return run(["seevar-next-flight", "monitor", "--human", "--samples", "0", "--interval-sec", "30"])
 
 
 def dashboard(config_path: Path) -> int:
@@ -131,7 +136,8 @@ def menu(config_path: Path) -> int:
         "5": ("Refresh AAVSO catalog", refresh_aavso),
         "6": ("Submit seestarpy plan", lambda: guarded_flight_submit(config, config_path)),
         "7": ("Seestarpy plan status", flight_status),
-        "8": ("Start dashboard", lambda: dashboard(config_path)),
+        "8": ("Monitor flight", flight_monitor),
+        "9": ("Start dashboard", lambda: dashboard(config_path)),
         "q": ("Quit", lambda: 0),
     }
     while True:
@@ -160,6 +166,7 @@ def main() -> int:
             "refresh-aavso",
             "flight-submit",
             "flight-status",
+            "flight-monitor",
             "dashboard",
         ],
         default="menu",
@@ -182,6 +189,8 @@ def main() -> int:
         return guarded_flight_submit(config, args.config)
     if args.command == "flight-status":
         return flight_status()
+    if args.command == "flight-monitor":
+        return flight_monitor()
     if args.command == "dashboard":
         return dashboard(args.config)
     return 2
