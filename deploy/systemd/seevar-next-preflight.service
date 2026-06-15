@@ -1,0 +1,7 @@
+[Unit]
+Description=SeeVar Next nightly preflight
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/SeeVar-Next
+ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next preflight

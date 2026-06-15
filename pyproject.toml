@@ -18,6 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
+seevar-next = "seevar_next.operator:main"
 seevar-next-fetch-aavso = "seevar_next.preflight.aavso:main"
 seevar-next-fetch-vsx = "seevar_next.preflight.vsx:main"
 seevar-next-preflight = "seevar_next.preflight.planner:main"

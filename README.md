@@ -52,8 +52,14 @@ Start with [ROADMAP.md](ROADMAP.md). It is the control document for this repo.
 ## First Preflight Commands
 
 ```bash
+seevar-next
+```
+
+Or run directly:
+
+```bash
 seevar-next-preflight --catalog campaign_targets --lat 52.39 --lon 4.61 --output data/tonights_plan.json
 seevar-next-seestarpy-plan --input data/tonights_plan.json --output data/seestarpy_plan.json
 ```
 
-See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), and [docs/SALVAGE.md](docs/SALVAGE.md).
+See [docs/MANUAL.md](docs/MANUAL.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), and [docs/SALVAGE.md](docs/SALVAGE.md).

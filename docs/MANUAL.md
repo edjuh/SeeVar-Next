@@ -11,6 +11,30 @@ pip install -e ".[dev]"
 pytest
 ```
 
+## Normal Use
+
+```bash
+seevar-next
+```
+
+Pick:
+
+- `1` build tonight's plan
+- `2` dry-run 3 targets
+- `3` show status
+- `4` refresh AAVSO catalog
+
+Configuration lives in `config/seevar-next.json`.
+Set `sun_alt_limit_deg` stricter or looser for your site and season.
+
+## Daily Automatic Run
+
+See [SYSTEMD.md](SYSTEMD.md).
+
+## Manual Commands
+
+Use these when debugging.
+
 ## Refresh Catalogs
 
 ```bash
