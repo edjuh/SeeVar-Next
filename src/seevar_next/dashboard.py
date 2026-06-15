@@ -82,6 +82,7 @@ def render_dashboard(config_path: Path = Path("config/seevar-next.json"), data_d
     """Render the dashboard HTML."""
     config = load_config(config_path)
     readiness = _read_text(data_dir / "readiness.txt")
+    policy_text = _read_text(data_dir / "flight_policy.txt")
     flight_text = _read_text(data_dir / "flight_status.txt")
     flight = _read_json(data_dir / "flight_status.json")
     plan = _read_json(data_dir / "tonights_plan.json")
@@ -110,10 +111,14 @@ a {{ color: #67e8f9; margin-right: 16px; }}
 <main>
 <h1>SeeVar Next</h1>
 <p class="muted">{html.escape(config.timezone)} | {config.latitude_deg:.4f}, {config.longitude_deg:.4f}</p>
-<p><a href="/readiness.txt">readiness.txt</a><a href="/readiness.json">readiness.json</a><a href="/flight_status.txt">flight_status.txt</a><a href="/flight_status.json">flight_status.json</a><a href="/tonights_plan.json">plan.json</a><a href="/status.json">status.json</a></p>
+<p><a href="/readiness.txt">readiness.txt</a><a href="/readiness.json">readiness.json</a><a href="/flight_policy.txt">flight_policy.txt</a><a href="/flight_policy.json">flight_policy.json</a><a href="/flight_status.txt">flight_status.txt</a><a href="/flight_status.json">flight_status.json</a><a href="/tonights_plan.json">plan.json</a><a href="/status.json">status.json</a></p>
 <section>
 <h2>Readiness</h2>
 <pre>{html.escape(readiness)}</pre>
+</section>
+<section>
+<h2>Flight Policy</h2>
+<pre>{html.escape(policy_text)}</pre>
 </section>
 <section>
 <h2>Flight</h2>
@@ -152,6 +157,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
         files = {
             "/readiness.txt": (self.data_dir / "readiness.txt", "text/plain"),
             "/readiness.json": (self.data_dir / "readiness.json", "application/json"),
+            "/flight_policy.txt": (self.data_dir / "flight_policy.txt", "text/plain"),
+            "/flight_policy.json": (self.data_dir / "flight_policy.json", "application/json"),
             "/flight_status.txt": (self.data_dir / "flight_status.txt", "text/plain"),
             "/flight_status.json": (self.data_dir / "flight_status.json", "application/json"),
             "/tonights_plan.json": (self.data_dir / "tonights_plan.json", "application/json"),

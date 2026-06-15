@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 from seevar_next.config import load_config
+from seevar_next.flight.policy import render_policy, write_policy
 from seevar_next.flight.seestar_rpc import probe_status
 from seevar_next.flight.seestarpy_adapter import SeestarpyAdapter
 from seevar_next.flight.status import (
@@ -45,11 +46,13 @@ def _print_status(snapshot: dict, human: bool) -> None:
 def main() -> int:
     """CLI entry point."""
     parser = argparse.ArgumentParser(description="Submit or monitor a seestarpy plan.")
-    parser.add_argument("command", choices=["validate", "submit", "status", "monitor", "stop"])
+    parser.add_argument("command", choices=["validate", "policy", "submit", "status", "monitor", "stop"])
     parser.add_argument("--plan", type=Path, default=Path("data/seestarpy_plan.json"))
     parser.add_argument("--proof", type=Path, default=Path("data/flight_runs/flight.jsonl"))
     parser.add_argument("--json-output", type=Path, default=Path("data/flight_status.json"))
     parser.add_argument("--text-output", type=Path, default=Path("data/flight_status.txt"))
+    parser.add_argument("--policy-json-output", type=Path, default=Path("data/flight_policy.json"))
+    parser.add_argument("--policy-text-output", type=Path, default=Path("data/flight_policy.txt"))
     parser.add_argument("--config", type=Path, default=Path("config/seevar-next.json"))
     parser.add_argument("--run-id", default="manual")
     parser.add_argument("--timeout-sec", type=float, default=12.0)
@@ -58,6 +61,10 @@ def main() -> int:
     parser.add_argument("--samples", type=int, default=1, help="Monitor samples; 0 means forever.")
     args = parser.parse_args()
     adapter = SeestarpyAdapter(args.proof, args.run_id, timeout_sec=args.timeout_sec)
+    if args.command == "policy":
+        policy = write_policy(args.config, args.policy_json_output, args.policy_text_output, args.proof, args.run_id)
+        print(render_policy(policy), end="")
+        return 0
     if args.command == "validate":
         payload = adapter.validate_file(args.plan)
         print(json.dumps({"valid": payload["plan_name"], "targets": len(payload["list"])}, indent=2))

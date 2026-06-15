@@ -50,6 +50,22 @@ class WeatherConfig(BaseModel):
     min_visibility_m: float = 5000.0
 
 
+class FlightConfig(BaseModel):
+    """Flight execution policy."""
+
+    primary_adapter: str = "seestarpy"
+    fallback_adapter: str = "seestar_alp"
+    submit_mode: str = "plan"
+    monitor_interval_sec: float = 30.0
+    retry_failed_targets: bool = True
+    max_attempts_per_target: int = 2
+    allow_pretty_targets: bool = True
+    pretty_after_science: bool = True
+    fail_on_missing_solve: bool = True
+    fail_on_tracking_off: bool = True
+    fail_on_too_few_frames: bool = True
+
+
 class SeeVarConfig(BaseModel):
     """Top-level operator config."""
 
@@ -65,6 +81,7 @@ class SeeVarConfig(BaseModel):
     storage: StorageConfig = Field(default_factory=StorageConfig)
     aavso: AavsoConfig = Field(default_factory=AavsoConfig)
     weather: WeatherConfig = Field(default_factory=WeatherConfig)
+    flight: FlightConfig = Field(default_factory=FlightConfig)
     seestarpy_plan_path: str = "data/seestarpy_plan.json"
 
 

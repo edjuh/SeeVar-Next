@@ -26,8 +26,9 @@ Pick:
 - `5` refresh AAVSO catalog
 - `6` submit seestarpy plan
 - `7` show seestarpy plan status
-- `8` monitor flight
-- `9` start dashboard
+- `8` show flight policy
+- `9` monitor flight
+- `10` start dashboard
 
 Configuration lives in `config/seevar-next.json`.
 Set `sun_alt_limit_deg` stricter or looser for your site and season.
@@ -71,6 +72,7 @@ seevar-next-seestarpy-plan \
 
 ```bash
 seevar-next readiness
+seevar-next-flight policy
 seevar-next-flight validate --plan data/seestarpy_plan.json
 seevar-next-flight submit --plan data/seestarpy_plan.json
 seevar-next-flight status --human --timeout-sec 12
@@ -88,9 +90,20 @@ The operator `flight-submit` command runs readiness first and blocks submit on w
 
 Flight status writes:
 
+- `data/flight_policy.txt`: human-readable flight rules
+- `data/flight_policy.json`: machine-readable flight rules
 - `data/flight_status.txt`: human-readable running plan state
 - `data/flight_status.json`: machine-readable running plan state
 - `data/flight_runs/flight.jsonl`: proof rows
+
+Current flight policy:
+
+- submit whole plans, do not micromanage individual exposures unless forced
+- primary adapter: `seestarpy`
+- fallback adapter: `seestar_alp`
+- target fails on missing solve, tracking off, or too few accepted frames
+- failed science targets are reported and retried when time allows
+- pretty targets are allowed only after science work has spare time
 
 ## Dry Run
 

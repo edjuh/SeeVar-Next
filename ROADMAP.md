@@ -18,11 +18,14 @@ Build a small, strict observatory pipeline:
 ## Design Rules
 
 - Prefer `astropy`, `photutils`, and `seestarpy` over custom astronomy/control code.
+- Use `seestar_alp` as fallback when `seestarpy` is not reliable enough.
 - Keep telescope execution thin: plan, submit, monitor, download.
 - Keep science strict: no WCS, no photometry; no stack, no object success.
+- Flight target failure means missing solve, tracking off, or too few accepted frames.
+- Failed science targets should be reported and scheduled for a retry attempt.
 - One target per night produces one accepted stack, one preview JPEG, one photometry result, one report row.
 - Every phase writes JSON proof records.
-- Pretty-picture work is out of scope until AAVSO flow is reliable.
+- Pretty-picture work is allowed only after science targets have enough time.
 
 ## Milestone 0: Skeleton And Doctrine
 
@@ -101,17 +104,19 @@ Deliverables:
 
 - `seestarpy` adapter
 - `seestarpy` plan submit/status adapter - started
-- optional `seestar_alp` plan export
+- `seestar_alp` fallback plan export
 - target state monitor
 - telescope reachability gate - started
 - stack/download monitor
 - timeout and fail-reason handling
+- retry plan for failed targets
 
 Proof:
 
 - dry-run adapter emits connect, slew, solve, track, stack, download proofs
 - real adapter can run one target without SeeVar steering individual frames
 - connection loss produces failed proof, not silent success
+- policy proof records primary adapter, fallback adapter, failure rules, and retry rules
 
 ## Milestone 4: AAVSO Gate
 
@@ -159,7 +164,7 @@ Open questions stay in this file until answered or moved to issues.
 
 ## Open Questions
 
-- Primary execution path: `seestarpy`, `seestar_alp`, or both?
+- Exact seestar_alp plan handoff format and endpoint.
 - Exact local catalog format to carry over from SeeVar.
 - Minimum FITS headers required for accepted postflight.
 - Whether AAVSO upload should remain manual-only until first validated month.

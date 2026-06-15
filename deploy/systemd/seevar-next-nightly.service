@@ -6,4 +6,5 @@ Type=oneshot
 WorkingDirectory=%h/SeeVar-Next
 ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next preflight
 ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next readiness
+ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next-flight policy
 ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next-flight submit --plan data/seestarpy_plan.json

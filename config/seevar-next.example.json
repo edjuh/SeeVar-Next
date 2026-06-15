@@ -38,6 +38,19 @@
     "max_gust_kmh": 45.0,
     "min_visibility_m": 5000.0
   },
+  "flight": {
+    "primary_adapter": "seestarpy",
+    "fallback_adapter": "seestar_alp",
+    "submit_mode": "plan",
+    "monitor_interval_sec": 30.0,
+    "retry_failed_targets": true,
+    "max_attempts_per_target": 2,
+    "allow_pretty_targets": true,
+    "pretty_after_science": true,
+    "fail_on_missing_solve": true,
+    "fail_on_tracking_off": true,
+    "fail_on_too_few_frames": true
+  },
   "storage": {
     "work_dir": "data",
     "raw_dir": "data/raw",

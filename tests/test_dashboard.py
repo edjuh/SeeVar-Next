@@ -11,6 +11,7 @@ def test_dashboard_renders_human_status(tmp_path):
     config_path = config_dir / "seevar-next.json"
     config_path.write_text(json.dumps({"latitude_deg": 52.39, "longitude_deg": 4.61}), encoding="utf-8")
     (data_dir / "readiness.txt").write_text("SeeVar Next readiness: GO\n", encoding="utf-8")
+    (data_dir / "flight_policy.txt").write_text("Primary: seestarpy\nFallback: seestar_alp\n", encoding="utf-8")
     (data_dir / "tonights_plan.json").write_text(
         json.dumps({"targets": [{"name": "ST Boo", "target_type": "UGSU", "max_alt_deg": 55.2}]}),
         encoding="utf-8",
@@ -23,5 +24,6 @@ def test_dashboard_renders_human_status(tmp_path):
     html = render_dashboard(config_path, data_dir)
 
     assert "SeeVar Next readiness: GO" in html
+    assert "Fallback: seestar_alp" in html
     assert "ST Boo" in html
     assert "readiness.txt" in html
