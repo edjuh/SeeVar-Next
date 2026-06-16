@@ -15,7 +15,7 @@ def fetch_weather(config: SeeVarConfig) -> dict[str, Any]:
     """Fetch a compact Open-Meteo forecast."""
     if config.weather.provider != "open-meteo":
         raise ValueError(f"unsupported weather provider: {config.weather.provider}")
-    params = {
+    params: dict[str, str | int | float] = {
         "latitude": config.latitude_deg,
         "longitude": config.longitude_deg,
         "timezone": config.timezone,

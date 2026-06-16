@@ -26,7 +26,7 @@ No target is successful unless the whole chain passes:
 ```bash
 python -m venv .venv
 . .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e ".[seestar,dev]"
 pytest
 ```
 
@@ -44,12 +44,14 @@ The catalog is intentionally small at this stage:
   "ra_deg": 210.0,
   "dec_deg": 40.0,
   "filter_name": "TG",
-  "observer_code": "TST",
+  "observer_code": "YOUR_AAVSO_CODE",
   "comparison_stars": [
     {"id": "C1", "ra_deg": 210.01, "dec_deg": 40.0, "mag": 12.1}
   ]
 }
 ```
+
+`TST`, `TEST`, and `UNKNOWN` are blocked before AAVSO report staging.
 
 ## Roadmap
 
@@ -79,6 +81,12 @@ seevar-next-flight status --human
 seevar-next dashboard
 ```
 
-Open `http://192.168.178.57:8765/`.
+Use the configured dashboard URL from `config/seevar-next.json`. The default is `http://127.0.0.1:8765/`.
 
-See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), [docs/FLIGHT.md](docs/FLIGHT.md), [docs/POSTFLIGHT.md](docs/POSTFLIGHT.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), and [docs/SALVAGE.md](docs/SALVAGE.md).
+## Control Adapters
+
+- `seestarpy` is the primary Python adapter: `pip install -e ".[seestar,dev]"`
+- `seestar_alp` is a fallback control path, but not packaged as a Python dependency in this repo yet
+- if you want fallback support, install and run the `seestar_alp` daemon separately
+
+See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), [docs/FLIGHT.md](docs/FLIGHT.md), [docs/POSTFLIGHT.md](docs/POSTFLIGHT.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), [docs/SALVAGE.md](docs/SALVAGE.md), and [CHANGELOG.md](CHANGELOG.md).

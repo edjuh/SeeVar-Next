@@ -34,6 +34,7 @@ MIN_TRAIL_PIXELS = 8
 APERTURE_RADIUS_PX = 4.0
 ANNULUS_INNER_PX = 8.0
 ANNULUS_OUTER_PX = 12.0
+BLOCKED_OBSERVER_CODES = {"TST", "TEST", "UNKNOWN"}
 
 
 def discover_fits(input_dir: Path) -> list[Path]:
@@ -52,6 +53,13 @@ def require_frames(input_dir: Path, minimum: int = 1) -> list[Path]:
 def load_catalog(path: Path) -> PhotometryCatalog:
     """Load one target photometry catalog."""
     return PhotometryCatalog.model_validate(json.loads(path.read_text(encoding="utf-8")))
+
+
+def validate_observer_code(observer_code: str) -> None:
+    """Reject test or unset observer codes before report staging."""
+    code = observer_code.strip().upper()
+    if code in BLOCKED_OBSERVER_CODES:
+        raise ValueError(f"observer_code {observer_code!r} is blocked for AAVSO staging")
 
 
 def read_fits_data(path: Path) -> tuple[np.ndarray, fits.Header]:
@@ -375,6 +383,7 @@ def postflight_target(input_dir: Path, output_dir: Path, catalog_path: Path, run
             raise
 
         try:
+            validate_observer_code(photometry["observer_code"])
             report_path = output_dir / f"{catalog.target.replace(' ', '_')}_aavso.txt"
             write_aavso_report(photometry, stack_fits, report_path)
             proof("report", StepStatus.PASS, evidence=report_path)

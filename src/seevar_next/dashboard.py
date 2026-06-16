@@ -112,6 +112,7 @@ a {{ color: #67e8f9; margin-right: 16px; }}
 <main>
 <h1>SeeVar Next</h1>
 <p class="muted">{html.escape(config.timezone)} | {config.latitude_deg:.4f}, {config.longitude_deg:.4f}</p>
+<p class="muted">Dashboard: {html.escape(config.dashboard.public_url)}</p>
 <p><a href="/readiness.txt">readiness.txt</a><a href="/readiness.json">readiness.json</a><a href="/flight_policy.txt">flight_policy.txt</a><a href="/flight_policy.json">flight_policy.json</a><a href="/flight_steps.txt">flight_steps.txt</a><a href="/flight_steps.json">flight_steps.json</a><a href="/flight_status.txt">flight_status.txt</a><a href="/flight_status.json">flight_status.json</a><a href="/tonights_plan.json">plan.json</a><a href="/status.json">status.json</a></p>
 <section>
 <h2>Readiness</h2>
@@ -201,15 +202,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
 def main() -> int:
     """CLI entry point."""
     parser = argparse.ArgumentParser(description="Serve SeeVar Next human dashboard.")
-    parser.add_argument("--host", default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--host")
+    parser.add_argument("--port", type=int)
     parser.add_argument("--config", type=Path, default=Path("config/seevar-next.json"))
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     args = parser.parse_args()
+    config = load_config(args.config)
     DashboardHandler.config_path = args.config
     DashboardHandler.data_dir = args.data_dir
-    server = ThreadingHTTPServer((args.host, args.port), DashboardHandler)
-    print(f"SeeVar Next dashboard: http://{args.host}:{args.port}", flush=True)
+    host = args.host or config.dashboard.host
+    port = args.port or config.dashboard.port
+    server = ThreadingHTTPServer((host, port), DashboardHandler)
+    print(f"SeeVar Next dashboard: {config.dashboard.public_url}", flush=True)
     server.serve_forever()
     return 0
 

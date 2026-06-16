@@ -49,7 +49,7 @@ def build_readiness(config: SeeVarConfig, *, scope_timeout_sec: float = 2.0) -> 
     except Exception as exc:
         weather = {"ok": False, "summary": "weather unavailable", "reasons": [str(exc)]}
     scopes = [probe_scope(scope, scope_timeout_sec) for scope in config.scopes]
-    blockers = []
+    blockers: list[str] = []
     if not weather["ok"]:
         blockers.extend(f"weather: {reason}" for reason in weather.get("reasons", []))
     for scope in scopes:

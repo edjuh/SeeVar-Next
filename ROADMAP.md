@@ -57,7 +57,7 @@ Deliverables:
 - frame QC: saturation and low-contrast rejection - started
 - trail/blur detection - pending
 - stack candidate builder - started
-- solve stack first - pending external solver; current gate requires valid stack WCS
+- solve stack first - blocked on external solver integration
 - WCS proof object - started
 - aperture photometry via `photutils` - started
 - comparison-star matching against supplied catalog JSON - started
@@ -69,6 +69,7 @@ Proof:
 - bad frames are rejected before stacking - passing
 - missing WCS blocks photometry - passing
 - missing comparison stars blocks report - passing
+- one documented external solver path produces celestial WCS on a synthetic non-WCS stack - pending
 
 ## Milestone 2: Preflight Planner
 
@@ -86,7 +87,7 @@ Deliverables:
 - weather gate through Open-Meteo - started
 - assign scopes
 - export seestarpy-compatible plan - started
-- optional seestar_alp-compatible plan
+- optional seestar_alp-compatible plan - pending daemon handoff contract
 
 Proof:
 
@@ -104,7 +105,7 @@ Deliverables:
 
 - `seestarpy` adapter
 - `seestarpy` plan submit/status adapter - started
-- `seestar_alp` fallback plan export
+- `seestar_alp` fallback plan export - pending daemon handoff contract
 - target state monitor
 - telescope reachability gate - started
 - stack/download monitor
@@ -168,3 +169,4 @@ Open questions stay in this file until answered or moved to issues.
 - Exact local catalog format to carry over from SeeVar.
 - Minimum FITS headers required for accepted postflight.
 - Whether AAVSO upload should remain manual-only until first validated month.
+- Exact external solver integration: local `solve-field`, local `astrometry.net`, or remote API.

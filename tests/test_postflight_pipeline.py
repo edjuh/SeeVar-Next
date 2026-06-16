@@ -51,7 +51,7 @@ def write_catalog(path: Path) -> None:
         "ra_deg": 210.0,
         "dec_deg": 40.0,
         "filter_name": "TG",
-        "observer_code": "TST",
+        "observer_code": "EDA",
         "comparison_stars": [
             {"id": "C1", "ra_deg": 210.01, "dec_deg": 40.0, "mag": 12.1},
             {"id": "C2", "ra_deg": 209.99, "dec_deg": 40.0, "mag": 12.4},
@@ -66,8 +66,22 @@ def write_catalog_without_comps(path: Path) -> None:
         "ra_deg": 210.0,
         "dec_deg": 40.0,
         "filter_name": "TG",
-        "observer_code": "TST",
+        "observer_code": "EDA",
         "comparison_stars": [],
+    }
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+
+def write_catalog_with_test_code(path: Path) -> None:
+    payload = {
+        "target": "ST Boo",
+        "ra_deg": 210.0,
+        "dec_deg": 40.0,
+        "filter_name": "TG",
+        "observer_code": "TST",
+        "comparison_stars": [
+            {"id": "C1", "ra_deg": 210.01, "dec_deg": 40.0, "mag": 12.1},
+        ],
     }
     path.write_text(json.dumps(payload), encoding="utf-8")
 
@@ -143,3 +157,20 @@ def test_qc_rejects_trailed_frame(tmp_path):
     assert ok is False
     assert reason == "trailed frame"
     assert meta["trail_elongation"] > 5.0
+
+
+def test_postflight_blocks_test_observer_code(tmp_path):
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir()
+    header = make_wcs_header()
+    for idx in range(3):
+        write_frame(input_dir / f"frame_{idx}.fits", header)
+    catalog_path = tmp_path / "catalog.json"
+    write_catalog_with_test_code(catalog_path)
+
+    with pytest.raises(ValueError, match="observer_code"):
+        postflight_target(input_dir, output_dir, catalog_path, run_id="test-run")
+
+    rows = ProofLedger(output_dir / "proof.jsonl").read_all()
+    assert any(row.step == "report" and row.status == StepStatus.FAIL for row in rows)

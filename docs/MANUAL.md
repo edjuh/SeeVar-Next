@@ -7,9 +7,11 @@ SeeVar Next is a strict AAVSO workflow.
 ```bash
 python -m venv .venv
 . .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e ".[seestar,dev]"
 pytest
 ```
+
+`seestar_alp` is documented as a fallback control path, but it is not packaged as a Python dependency in this repo. Install its daemon separately if you want fallback execution.
 
 ## Normal Use
 
@@ -134,7 +136,7 @@ seevar-next-status \
 seevar-next dashboard
 ```
 
-Open `http://192.168.178.57:8765/`.
+Open the configured dashboard URL from `config/seevar-next.json`. Default: `http://127.0.0.1:8765/`.
 
 The dashboard is intentionally small: readiness, flight status, tonight's targets, proof status, and links to raw files.
 

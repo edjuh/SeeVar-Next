@@ -8,6 +8,9 @@ version = "0.1.0"
 description = "Proof-driven AAVSO workflow for Seestar telescopes"
 readme = "README.md"
 requires-python = ">=3.11"
+authors = [{name = "Ed / SeeVar contributors"}]
+license = {text = "MIT"}
+keywords = ["aavso", "astronomy", "photometry", "seestar", "variable-stars"]
 dependencies = [
   "astropy>=7.0",
   "httpx>=0.28",
@@ -16,6 +19,11 @@ dependencies = [
   "pillow>=11.0",
   "pydantic>=2.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/edjuh/SeeVar-Next"
+Repository = "https://github.com/edjuh/SeeVar-Next"
+Issues = "https://github.com/edjuh/SeeVar-Next/issues"
 
 [project.scripts]
 seevar-next = "seevar_next.operator:main"
@@ -35,8 +43,19 @@ seestar = [
   "seestarpy",
 ]
 dev = [
+  "mypy>=1.10",
   "pytest>=8.0",
+  "ruff>=0.5",
 ]
+
+[tool.ruff]
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+check_untyped_defs = true
+ignore_missing_imports = true
 
 [tool.setuptools.packages.find]
 where = ["src"]

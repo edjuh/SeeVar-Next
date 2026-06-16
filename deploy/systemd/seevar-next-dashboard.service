@@ -3,7 +3,7 @@ Description=SeeVar Next dashboard
 
 [Service]
 WorkingDirectory=%h/SeeVar-Next
-ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next-dashboard --host 0.0.0.0 --port 8765
+ExecStart=%h/SeeVar-Next/.venv/bin/seevar-next-dashboard
 Restart=on-failure
 
 [Install]

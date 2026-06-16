@@ -44,7 +44,8 @@ def normalize_targets(rows: list[dict[str, Any]], mag_limit: float = 15.0, min_d
     out: dict[str, dict[str, Any]] = {}
     for row in rows:
         name = row.get("star_name") or row.get("name") or row.get("primaryName")
-        coords = row.get("coordinates") if isinstance(row.get("coordinates"), dict) else {}
+        coords_value = row.get("coordinates")
+        coords: dict[str, Any] = coords_value if isinstance(coords_value, dict) else {}
         ra = coerce_float(row.get("ra") or row.get("raDeg") or coords.get("ra") or coords.get("raDeg"))
         dec = coerce_float(row.get("dec") or row.get("decDeg") or coords.get("dec") or coords.get("decDeg"))
         mag = coerce_float(row.get("max_mag") or row.get("maxMag") or row.get("magnitude") or row.get("mag"))

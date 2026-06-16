@@ -60,5 +60,10 @@
   "aavso": {
     "observer_code": "UNKNOWN",
     "target_tool_api_key_env": "AAVSO_TARGET_TOOL_API_KEY"
+  },
+  "dashboard": {
+    "host": "127.0.0.1",
+    "port": 8765,
+    "public_url": "http://127.0.0.1:8765/"
   }
 }

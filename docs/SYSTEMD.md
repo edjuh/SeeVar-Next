@@ -35,7 +35,7 @@ systemctl --user enable --now seevar-next-dashboard.service
 systemctl --user enable --now seevar-next-flight-monitor.service
 ```
 
-Open `http://192.168.178.57:8765/`.
+Open the configured dashboard URL from `config/seevar-next.json`. Default: `http://127.0.0.1:8765/`.
 
 ## Preflight Only
 

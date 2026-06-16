@@ -35,6 +35,14 @@ class AavsoConfig(BaseModel):
     target_tool_api_key_env: str = "AAVSO_TARGET_TOOL_API_KEY"
 
 
+class DashboardConfig(BaseModel):
+    """Dashboard binding and published URL."""
+
+    host: str = "127.0.0.1"
+    port: int = 8765
+    public_url: str = "http://127.0.0.1:8765/"
+
+
 class WeatherConfig(BaseModel):
     """Weather gate settings."""
 
@@ -80,6 +88,7 @@ class SeeVarConfig(BaseModel):
     scopes: list[ScopeConfig] = Field(default_factory=list)
     storage: StorageConfig = Field(default_factory=StorageConfig)
     aavso: AavsoConfig = Field(default_factory=AavsoConfig)
+    dashboard: DashboardConfig = Field(default_factory=DashboardConfig)
     weather: WeatherConfig = Field(default_factory=WeatherConfig)
     flight: FlightConfig = Field(default_factory=FlightConfig)
     seestarpy_plan_path: str = "data/seestarpy_plan.json"

@@ -114,7 +114,7 @@ class SeestarpyAdapter:
         except Exception as exc:
             self._proof("running_plan", StepStatus.FAIL, reason=str(exc))
             raise
-        meta = {"running": current is not None}
+        meta: dict[str, Any] = {"running": current is not None}
         if current:
             meta["state"] = current.get("state")
             meta["plan_name"] = (current.get("plan") or {}).get("plan_name")
