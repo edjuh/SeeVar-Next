@@ -89,4 +89,4 @@ Use the configured dashboard URL from `config/seevar-next.json`. The default is 
 - `seestar_alp` is a fallback control path, but not packaged as a Python dependency in this repo yet
 - if you want fallback support, install and run the `seestar_alp` daemon separately
 
-See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), [docs/FLIGHT.md](docs/FLIGHT.md), [docs/POSTFLIGHT.md](docs/POSTFLIGHT.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), [docs/SALVAGE.md](docs/SALVAGE.md), and [CHANGELOG.md](CHANGELOG.md).
+See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), [docs/FLIGHT.md](docs/FLIGHT.md), [docs/POSTFLIGHT.md](docs/POSTFLIGHT.md), [docs/LOGIC_SALVAGE.md](docs/LOGIC_SALVAGE.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), [docs/SALVAGE.md](docs/SALVAGE.md), and [CHANGELOG.md](CHANGELOG.md).
