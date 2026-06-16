@@ -3,10 +3,8 @@
 """
 Filename: src/seevar_next/preflight/catalogs.py
 Version: 0.1.0
-Objective: Load mixed SeeVar-style catalog JSON safely and normalize it into
-strict `TargetPlan` rows for preflight.
+Objective: Load mixed SeeVar-style catalog JSON safely and normalize it into strict `TargetPlan` rows for preflight.
 """
-
 from __future__ import annotations
 
 import json

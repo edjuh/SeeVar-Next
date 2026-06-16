@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_flight_policy.py
+Version: 0.1.0
+Objective: Test flight policy behavior.
+"""
 from seevar_next.config import SeeVarConfig
 from seevar_next.flight.policy import build_policy, render_policy
 

@@ -1,5 +1,10 @@
-"""Small direct Seestar JSON-RPC probes."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/seestar_rpc.py
+Version: 0.1.0
+Objective: Small direct Seestar JSON-RPC probes.
+"""
 from __future__ import annotations
 
 import json

@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_dashboard.py
+Version: 0.1.0
+Objective: Test dashboard behavior.
+"""
 import json
 
 from seevar_next.dashboard import render_dashboard

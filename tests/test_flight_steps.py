@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_flight_steps.py
+Version: 0.1.0
+Objective: Test flight steps behavior.
+"""
 import json
 
 from seevar_next.flight.steps import render_step_summary, run_step_dryrun

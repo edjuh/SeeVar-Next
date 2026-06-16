@@ -1,5 +1,10 @@
-"""JSONL proof ledger."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/proof/ledger.py
+Version: 0.1.0
+Objective: JSONL proof ledger.
+"""
 from __future__ import annotations
 
 import json

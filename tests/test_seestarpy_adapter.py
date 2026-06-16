@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_seestarpy_adapter.py
+Version: 0.1.0
+Objective: Test seestarpy adapter behavior.
+"""
 import json
 import sys
 from types import SimpleNamespace

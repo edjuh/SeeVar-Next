@@ -1,5 +1,10 @@
-"""Shared proof and pipeline models."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/models.py
+Version: 0.1.0
+Objective: Shared proof and pipeline models.
+"""
 from __future__ import annotations
 
 from datetime import datetime, timezone

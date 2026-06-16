@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_flight_status.py
+Version: 0.1.0
+Objective: Test flight status behavior.
+"""
 from seevar_next.flight.status import build_flight_snapshot, build_submitted_snapshot, render_flight_status
 
 

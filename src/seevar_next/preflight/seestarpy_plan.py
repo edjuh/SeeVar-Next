@@ -1,5 +1,10 @@
-"""Export SeeVar plans to seestarpy named-plan JSON."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/preflight/seestarpy_plan.py
+Version: 0.1.0
+Objective: Export SeeVar plans to seestarpy named-plan JSON.
+"""
 from __future__ import annotations
 
 import argparse

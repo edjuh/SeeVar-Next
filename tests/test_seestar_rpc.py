@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_seestar_rpc.py
+Version: 0.1.0
+Objective: Test seestar rpc behavior.
+"""
 from seevar_next.flight.seestar_rpc import probe_status
 
 

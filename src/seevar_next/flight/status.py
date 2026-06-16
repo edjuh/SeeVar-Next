@@ -1,5 +1,10 @@
-"""Human flight status rendering."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/status.py
+Version: 0.1.0
+Objective: Human flight status rendering.
+"""
 from __future__ import annotations
 
 import json

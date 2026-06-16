@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_preflight_pipeline.py
+Version: 0.1.0
+Objective: Test preflight pipeline behavior.
+"""
 from datetime import datetime, timezone
 import json
 

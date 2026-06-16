@@ -1,5 +1,10 @@
-"""Small human dashboard for SeeVar Next."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/dashboard.py
+Version: 0.1.0
+Objective: Small human dashboard for SeeVar Next.
+"""
 from __future__ import annotations
 
 import argparse

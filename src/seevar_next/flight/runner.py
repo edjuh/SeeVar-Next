@@ -1,5 +1,10 @@
-"""Flight CLI."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/runner.py
+Version: 0.1.0
+Objective: Flight CLI.
+"""
 from __future__ import annotations
 
 import argparse

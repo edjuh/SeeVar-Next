@@ -1,5 +1,10 @@
-"""Small AAVSO VSX cache helper."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/preflight/vsx.py
+Version: 0.1.0
+Objective: Small AAVSO VSX cache helper.
+"""
 from __future__ import annotations
 
 import argparse

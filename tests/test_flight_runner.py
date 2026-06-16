@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_flight_runner.py
+Version: 0.1.0
+Objective: Test flight runner behavior.
+"""
 from seevar_next.flight import runner
 
 

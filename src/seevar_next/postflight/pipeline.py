@@ -1,5 +1,10 @@
-"""Postflight proof pipeline."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/postflight/pipeline.py
+Version: 0.1.0
+Objective: Postflight proof pipeline.
+"""
 from __future__ import annotations
 
 import argparse

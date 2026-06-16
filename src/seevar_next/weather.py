@@ -1,5 +1,10 @@
-"""Weather gates for unattended runs."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/weather.py
+Version: 0.1.0
+Objective: Weather gates for unattended runs.
+"""
 from __future__ import annotations
 
 from typing import Any

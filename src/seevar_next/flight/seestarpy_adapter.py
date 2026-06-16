@@ -1,5 +1,10 @@
-"""Proof-backed seestarpy plan adapter."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/seestarpy_adapter.py
+Version: 0.1.0
+Objective: Proof-backed seestarpy plan adapter.
+"""
 from __future__ import annotations
 
 import importlib

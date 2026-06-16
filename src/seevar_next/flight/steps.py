@@ -1,5 +1,10 @@
-"""Proofed flight-step dry run."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/steps.py
+Version: 0.1.0
+Objective: Proofed flight-step dry run.
+"""
 from __future__ import annotations
 
 import json

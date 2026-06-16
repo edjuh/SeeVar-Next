@@ -1,5 +1,10 @@
-"""Build compact status from proof ledgers."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/monitor/status.py
+Version: 0.1.0
+Objective: Build compact status from proof ledgers.
+"""
 from __future__ import annotations
 
 import argparse

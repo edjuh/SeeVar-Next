@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_readiness.py
+Version: 0.1.0
+Objective: Test readiness behavior.
+"""
 from seevar_next.config import ScopeConfig, SeeVarConfig
 from seevar_next.readiness import build_readiness, probe_scope, render_readiness
 from seevar_next.weather import evaluate_weather

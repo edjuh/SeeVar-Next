@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_operator.py
+Version: 0.1.0
+Objective: Test operator behavior.
+"""
 import json
 
 from seevar_next.config import load_config

@@ -1,5 +1,10 @@
-"""Operator menu and one-shot runner."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/operator.py
+Version: 0.1.0
+Objective: Operator menu and one-shot runner.
+"""
 from __future__ import annotations
 
 import argparse

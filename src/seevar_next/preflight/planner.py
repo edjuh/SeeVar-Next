@@ -1,5 +1,10 @@
-"""Proof-driven preflight planner."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/preflight/planner.py
+Version: 0.1.0
+Objective: Proof-driven preflight planner.
+"""
 from __future__ import annotations
 
 import argparse

@@ -1,5 +1,10 @@
-"""Flight policy reporting."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/policy.py
+Version: 0.1.0
+Objective: Flight policy reporting.
+"""
 from __future__ import annotations
 
 import json

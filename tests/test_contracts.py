@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_contracts.py
+Version: 0.1.0
+Objective: Test contracts behavior.
+"""
 from pathlib import Path
 
 import pytest

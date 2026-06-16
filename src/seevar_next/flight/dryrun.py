@@ -1,5 +1,10 @@
-"""Dry-run proof chain for planned targets."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/flight/dryrun.py
+Version: 0.1.0
+Objective: Dry-run proof chain for planned targets.
+"""
 from __future__ import annotations
 
 import argparse

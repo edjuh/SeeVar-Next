@@ -1,5 +1,10 @@
-"""Human-readable readiness checks."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/readiness.py
+Version: 0.1.0
+Objective: Human-readable readiness checks.
+"""
 from __future__ import annotations
 
 import argparse

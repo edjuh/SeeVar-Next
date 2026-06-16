@@ -1,5 +1,10 @@
-"""AAVSO Target Tool fetcher."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/preflight/aavso.py
+Version: 0.1.0
+Objective: AAVSO Target Tool fetcher.
+"""
 from __future__ import annotations
 
 import argparse

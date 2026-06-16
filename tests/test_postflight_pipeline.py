@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: tests/test_postflight_pipeline.py
+Version: 0.1.0
+Objective: Test postflight pipeline behavior.
+"""
 import json
 from pathlib import Path
 

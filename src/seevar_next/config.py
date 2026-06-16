@@ -1,5 +1,10 @@
-"""SeeVar Next configuration."""
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: src/seevar_next/config.py
+Version: 0.1.0
+Objective: SeeVar Next configuration.
+"""
 from __future__ import annotations
 
 import json
