@@ -18,6 +18,7 @@ from seevar_next.flight.status import (
     with_scope_status,
     write_flight_status,
 )
+from seevar_next.flight.steps import render_step_summary, run_step_dryrun
 
 
 def _scope_status(config_path: Path, timeout_sec: float) -> list[dict]:
@@ -46,25 +47,41 @@ def _print_status(snapshot: dict, human: bool) -> None:
 def main() -> int:
     """CLI entry point."""
     parser = argparse.ArgumentParser(description="Submit or monitor a seestarpy plan.")
-    parser.add_argument("command", choices=["validate", "policy", "submit", "status", "monitor", "stop"])
+    parser.add_argument("command", choices=["validate", "policy", "steps", "submit", "status", "monitor", "stop"])
     parser.add_argument("--plan", type=Path, default=Path("data/seestarpy_plan.json"))
     parser.add_argument("--proof", type=Path, default=Path("data/flight_runs/flight.jsonl"))
     parser.add_argument("--json-output", type=Path, default=Path("data/flight_status.json"))
     parser.add_argument("--text-output", type=Path, default=Path("data/flight_status.txt"))
     parser.add_argument("--policy-json-output", type=Path, default=Path("data/flight_policy.json"))
     parser.add_argument("--policy-text-output", type=Path, default=Path("data/flight_policy.txt"))
+    parser.add_argument("--steps-json-output", type=Path, default=Path("data/flight_steps.json"))
+    parser.add_argument("--steps-text-output", type=Path, default=Path("data/flight_steps.txt"))
     parser.add_argument("--config", type=Path, default=Path("config/seevar-next.json"))
     parser.add_argument("--run-id", default="manual")
     parser.add_argument("--timeout-sec", type=float, default=12.0)
     parser.add_argument("--human", action="store_true")
     parser.add_argument("--interval-sec", type=float, default=30.0)
     parser.add_argument("--samples", type=int, default=1, help="Monitor samples; 0 means forever.")
+    parser.add_argument("--limit", type=int, default=3)
+    parser.add_argument("--fail-code")
     args = parser.parse_args()
     adapter = SeestarpyAdapter(args.proof, args.run_id, timeout_sec=args.timeout_sec)
     if args.command == "policy":
         policy = write_policy(args.config, args.policy_json_output, args.policy_text_output, args.proof, args.run_id)
         print(render_policy(policy), end="")
         return 0
+    if args.command == "steps":
+        plan_path = Path("data/tonights_plan.json") if args.plan == Path("data/seestarpy_plan.json") else args.plan
+        result = run_step_dryrun(
+            plan_path,
+            args.proof,
+            args.steps_json_output,
+            args.steps_text_output,
+            limit=args.limit,
+            fail_code=args.fail_code,
+        )
+        print(render_step_summary(result) if args.human else json.dumps(result, indent=2), end="")
+        return 0 if result["failed"] == 0 else 2
     if args.command == "validate":
         payload = adapter.validate_file(args.plan)
         print(json.dumps({"valid": payload["plan_name"], "targets": len(payload["list"])}, indent=2))

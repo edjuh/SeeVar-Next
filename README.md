@@ -9,6 +9,12 @@ Clean reboot of SeeVar: AAVSO-first, proof-driven, and built around standard ast
 3. **Postflight**: reject bad frames, stack, plate-solve, run photometry, stage AAVSO report.
 4. **Proof**: every step writes JSON evidence and a clear pass/fail reason.
 
+Workflow codes:
+
+- `P1-P8` preflight
+- `A1-A12` flight per target
+- `F1-F8` postflight
+
 ## First Rule
 
 No target is successful unless the whole chain passes:
@@ -68,10 +74,11 @@ seevar-next-readiness --config config/seevar-next.json
 Human flight status and dashboard:
 
 ```bash
+seevar-next-flight steps --plan data/tonights_plan.json --proof data/flight_runs/flight_steps.jsonl --human
 seevar-next-flight status --human
 seevar-next dashboard
 ```
 
 Open `http://192.168.178.57:8765/`.
 
-See [docs/MANUAL.md](docs/MANUAL.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), and [docs/SALVAGE.md](docs/SALVAGE.md).
+See [docs/MANUAL.md](docs/MANUAL.md), [docs/PREFLIGHT.md](docs/PREFLIGHT.md), [docs/FLIGHT.md](docs/FLIGHT.md), [docs/POSTFLIGHT.md](docs/POSTFLIGHT.md), [docs/SYSTEMD.md](docs/SYSTEMD.md), and [docs/SALVAGE.md](docs/SALVAGE.md).

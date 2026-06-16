@@ -1,14 +1,15 @@
 # Preflight
 
-Preflight is now limited to useful work:
+Preflight is P1-P8:
 
-1. load SeeVar catalogs from `catalogs/`
-2. optionally refresh AAVSO Target Tool and VSX cache
-3. compute dark and observable windows with `astropy`
-4. check weather and telescope readiness before flight submit
-5. write `data/tonights_plan.json`
-6. export the plan to seestarpy named-plan JSON
-7. write proof rows for catalog, plan, weather, and scope stages
+1. `P1` load SeeVar catalogs from `catalogs/`
+2. `P2` check weather and safety readiness
+3. `P3` apply cadence and due-target filtering
+4. `P4` compute dark window, horizon, moon, and altitude gates with `astropy`
+5. `P5` probe enabled telescope inventory
+6. `P6` require 3-point alignment / pointing model proof
+7. `P7` write `data/tonights_plan.json` and export seestarpy JSON
+8. `P8` final GO / NO-GO gate before submit
 
 Old horizon panorama, fog, cloud, dashboard-only, and telescope-debug helpers are intentionally not carried forward.
 
@@ -22,6 +23,7 @@ seevar-next-seestarpy-plan --input data/tonights_plan.json --output data/seestar
 seevar-next-dryrun --plan data/tonights_plan.json --proof data/flight_runs/dryrun.jsonl --status data/status.json --limit 3
 seevar-next-status --proof data/flight_runs/dryrun.jsonl --plan data/tonights_plan.json
 seevar-next-readiness --config config/seevar-next.json
+seevar-next-flight steps --plan data/tonights_plan.json --proof data/flight_runs/flight_steps.jsonl --human
 seevar-next-flight validate --plan data/seestarpy_plan.json
 seevar-next-flight submit --plan data/seestarpy_plan.json
 seevar-next-flight status

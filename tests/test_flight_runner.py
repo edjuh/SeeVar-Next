@@ -111,3 +111,34 @@ def test_runner_status_returns_error_when_online_scope_status_fails(monkeypatch,
     assert rc == 1
     assert "SeeVar Next flight: ERROR" in out
     assert "plan api failed" in out
+
+
+def test_runner_steps_writes_human_summary(monkeypatch, tmp_path, capsys):
+    plan = tmp_path / "plan.json"
+    plan.write_text(
+        '{"run_id":"run-1","site_latitude_deg":52.0,"site_longitude_deg":4.0,"targets":[{"name":"ST Boo","ra_deg":210.0,"dec_deg":40.0}]}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "seevar-next-flight",
+            "steps",
+            "--plan",
+            str(plan),
+            "--proof",
+            str(tmp_path / "steps.jsonl"),
+            "--steps-json-output",
+            str(tmp_path / "steps.json"),
+            "--steps-text-output",
+            str(tmp_path / "steps.txt"),
+            "--human",
+        ],
+    )
+
+    rc = runner.main()
+    out = capsys.readouterr().out
+
+    assert rc == 0
+    assert "SeeVar Next flight-step dry run" in out
+    assert "A12 flight.commit" in (tmp_path / "steps.txt").read_text(encoding="utf-8")

@@ -6,7 +6,7 @@ The supplied unit assumes the repo lives at `~/SeeVar-Next`.
 
 ## Automated Nightly Run
 
-This builds the plan, checks weather and telescope reachability, then submits the seestarpy plan only if readiness passes.
+This builds the plan, checks weather and telescope reachability, writes the P/A/F step chain, then submits the seestarpy plan only if readiness passes.
 
 ```bash
 mkdir -p ~/.config/systemd/user

@@ -27,8 +27,9 @@ Pick:
 - `6` submit seestarpy plan
 - `7` show seestarpy plan status
 - `8` show flight policy
-- `9` monitor flight
-- `10` start dashboard
+- `9` show flight steps
+- `10` monitor flight
+- `11` start dashboard
 
 Configuration lives in `config/seevar-next.json`.
 Set `sun_alt_limit_deg` stricter or looser for your site and season.
@@ -73,6 +74,7 @@ seevar-next-seestarpy-plan \
 ```bash
 seevar-next readiness
 seevar-next-flight policy
+seevar-next-flight steps --plan data/tonights_plan.json --proof data/flight_runs/flight_steps.jsonl --human
 seevar-next-flight validate --plan data/seestarpy_plan.json
 seevar-next-flight submit --plan data/seestarpy_plan.json
 seevar-next-flight status --human --timeout-sec 12
@@ -92,6 +94,8 @@ Flight status writes:
 
 - `data/flight_policy.txt`: human-readable flight rules
 - `data/flight_policy.json`: machine-readable flight rules
+- `data/flight_steps.txt`: human-readable P/A/F chain dry run
+- `data/flight_steps.json`: machine-readable P/A/F chain dry run
 - `data/flight_status.txt`: human-readable running plan state
 - `data/flight_status.json`: machine-readable running plan state
 - `data/flight_runs/flight.jsonl`: proof rows

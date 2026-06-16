@@ -120,6 +120,11 @@ def flight_policy() -> int:
     return run(["seevar-next-flight", "policy"])
 
 
+def flight_steps() -> int:
+    """Show full P/A/F step chain dry run."""
+    return run(["seevar-next-flight", "steps", "--human", "--plan", "data/tonights_plan.json", "--proof", "data/flight_runs/flight_steps.jsonl"])
+
+
 def flight_monitor() -> int:
     """Monitor seestarpy flight status."""
     return run(["seevar-next-flight", "monitor", "--human", "--samples", "0", "--interval-sec", "30"])
@@ -142,8 +147,9 @@ def menu(config_path: Path) -> int:
         "6": ("Submit seestarpy plan", lambda: guarded_flight_submit(config, config_path)),
         "7": ("Seestarpy plan status", flight_status),
         "8": ("Show flight policy", flight_policy),
-        "9": ("Monitor flight", flight_monitor),
-        "10": ("Start dashboard", lambda: dashboard(config_path)),
+        "9": ("Show flight steps", flight_steps),
+        "10": ("Monitor flight", flight_monitor),
+        "11": ("Start dashboard", lambda: dashboard(config_path)),
         "q": ("Quit", lambda: 0),
     }
     while True:
@@ -173,6 +179,7 @@ def main() -> int:
             "flight-submit",
             "flight-status",
             "flight-policy",
+            "flight-steps",
             "flight-monitor",
             "dashboard",
         ],
@@ -198,6 +205,8 @@ def main() -> int:
         return flight_status()
     if args.command == "flight-policy":
         return flight_policy()
+    if args.command == "flight-steps":
+        return flight_steps()
     if args.command == "flight-monitor":
         return flight_monitor()
     if args.command == "dashboard":
